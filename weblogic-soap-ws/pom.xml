@@ -1,0 +1,125 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.microlau.webservices</groupId>
+	<artifactId>weblogic-sum-ws</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<weblogic.user>weblogic</weblogic.user>
+		<weblogic.password>oracle123</weblogic.password>
+		<weblogic.server.port>localhost:7001</weblogic.server.port>
+		<weblogic-server.version>12.2.1-4-0</weblogic-server.version>
+	</properties>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.3</version>
+				<configuration>
+					<warSourceDirectory>WebContent</warSourceDirectory>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>com.oracle.weblogic</groupId>
+				<artifactId>weblogic-maven-plugin</artifactId>
+				<version>${weblogic-server.version}</version>
+				<configuration>
+					<adminurl>t3://${weblogic.server.port}</adminurl>
+					<user>${weblogic.user}</user>
+					<password>${weblogic.password}</password>
+					<upload>true</upload>
+					<action>deploy</action>
+					<remote>false</remote>
+					<verbose>true</verbose>
+					<source>${project.build.directory}/${project.build.finalName}.${project.packaging}</source>
+					<name>${project.build.finalName}</name>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>${action.deploy}</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- display active profile in compile phase -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-help-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>show-profiles</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>active-profiles</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<profiles>
+		<!-- https://docs.oracle.com/middleware/12213/wls/DEPGD/maven_deployer.htm#DEPGD386 -->
+		<profile>
+			<id>deploy</id>
+			<properties>
+				<action.deploy>deploy</action.deploy>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>undeploy</id>
+			<properties>
+				<action.deploy>undeploy</action.deploy>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>stop-app</id>
+			<properties>
+				<action.deploy>stop-app</action.deploy>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>start-app</id>
+			<properties>
+				<action.deploy>start-app</action.deploy>
+			</properties>
+		</profile>
+
+	</profiles>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.oracle.weblogic</groupId>
+			<artifactId>weblogic-server-pom</artifactId>
+			<version>${weblogic-server.version}</version>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+</project>
