@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>mx.com.gm.sga</groupId>
+    <artifactId>sumaws</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.oracle.weblogic</groupId>
+                <artifactId>weblogic-maven-plugin</artifactId>
+                <version>12.2.1-4-0</version>
+                <!-- http://172.28.240.1:7001/ServicioSumarImpl/ServicioSumarImplService?WSDL -->
+                <!-- https://github.com/buttso/weblogic-maven-plugin -->
+                <!-- mvn com.oracle.weblogic:weblogic-maven-plugin:deploy -->
+                <!-- mvn com.oracle.weblogic:weblogic-maven-plugin:redeploy-->
+                <!-- mvn com.oracle.weblogic:weblogic-maven-plugin:undeploy -->
+                <!-- http://172.28.240.1:7001/ServicioSumarImpl/ServicioSumarImplService?WSDL -->
+                <configuration>
+                    <user>weblogic</user>
+                    <password>oracle123</password>
+                    <name>${project.build.finalName}</name>
+                    <source>${project.build.directory}/${project.build.finalName}.${project.packaging}</source>
+                </configuration>
+
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>8.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.jws</groupId>
+            <artifactId>javax.jws-api</artifactId>
+            <version>1.1</version>
+        </dependency>
+    </dependencies>
+
+    <pluginRepositories>
+    <pluginRepository>
+        <id>beabuild.snapshot</id>
+        <name>Beabuild Snapshot Repository</name>
+        <url>http://maven-beabuild-plugin.googlecode.com/svn/maven2/snapshots</url>
+    </pluginRepository>
+    <pluginRepository>
+        <id>beabuild.release</id>
+        <name>Beabuild Release Repository</name>
+        <url>http://maven-beabuild-plugin.googlecode.com/svn/maven2/releases</url>
+    </pluginRepository>
+    </pluginRepositories>
+</project>
